@@ -1,13 +1,18 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget, QLabel, QFrame
-from PyQt5.QtGui import QPaintEvent, QPainter, QBrush, QColor, QRegion
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtGui import QPaintEvent, QPainter, QBrush, QColor, QRegion, QPolygon
+from PyQt5.QtCore import Qt, QRect, QPoint
+import pygame
 
 
 class vistaCalles(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+
+        # Posiciones iniciales de los vehículos
+        self.carros_horizontales = [100, 30]  # Posiciones en x
+        self.carros_verticales = [420, 330]   # Posiciones en y
 
     def initUI(self):
         self.setWindowTitle("Gestión Semáforos")
@@ -70,6 +75,7 @@ class vistaCalles(QWidget):
         self.drawVereda(painter)
         self.drawLineas(painter)
         self.drawSemaforo(painter)
+        self.drawVehiculos(painter)
         painter.end()
 
     def drawFondo(self, painter):
@@ -111,3 +117,70 @@ class vistaCalles(QWidget):
         painter.setBrush(QBrush(Qt.black))
         painter.drawRect(130, 185, 60, 20)  # Semáforo calle horizontal
         painter.drawRect(185, 310, 20, 60)  # Semaforo calle vertical
+    
+    def drawVehiculos(self, painter: QPainter):
+        NEGRO = QColor(0, 0, 0)
+        ROJO = QColor(255, 0, 0)
+        AZUL = QColor(0, 0, 255)
+        GRIS = QColor(169, 169, 169)
+
+        # Dibujar los carros en la calle horizontal según sus posiciones actuales
+        for x_pos in self.carros_horizontales:
+            self.dibujarVehiculo(painter, ROJO, AZUL, NEGRO, GRIS, x_pos, 240, "horizontal")
+
+        # Dibujar los carros en la calle vertical según sus posiciones actuales
+        for y_pos in self.carros_verticales:
+            self.dibujarVehiculo(painter, ROJO, AZUL, NEGRO, GRIS, 240, y_pos, "vertical")
+
+
+
+    def dibujarVehiculo(self, painter: QPainter, color_cuerpo, color_techo, color_ruedas, color_detalle_ruedas, x, y, orientacion="horizontal"):
+        if orientacion == "horizontal":
+            # Cuerpo del carro (horizontal)
+            painter.setBrush(QBrush(color_cuerpo))
+            painter.drawRect(x, y, 50, 20)
+
+            # Techo del carro
+            polygon = QPolygon([
+                QPoint(x + 5, y),
+                QPoint(x + 20, y - 15),
+                QPoint(x + 30, y - 15),
+                QPoint(x + 45, y)
+            ])
+            painter.setBrush(QBrush(color_techo))
+            painter.drawPolygon(polygon)
+
+            # Ruedas
+            painter.setBrush(QBrush(color_ruedas))
+            painter.drawEllipse(QPoint(x + 10, y + 20), 5, 5)
+            painter.drawEllipse(QPoint(x + 40, y + 20), 5, 5)
+
+            # Detalles de las ruedas
+            painter.setBrush(QBrush(color_detalle_ruedas))
+            painter.drawEllipse(QPoint(x + 10, y + 20), 2, 2)
+            painter.drawEllipse(QPoint(x + 40, y + 20), 2, 2)
+
+        elif orientacion == "vertical":
+            # Cuerpo del carro (vertical)
+            painter.setBrush(QBrush(color_cuerpo))
+            painter.drawRect(x, y, 20, 50)
+
+            # Techo del carro (vertical)
+            polygon = QPolygon([
+                QPoint(x, y + 5),
+                QPoint(x - 15, y + 20),
+                QPoint(x - 15, y + 30),
+                QPoint(x, y + 45)
+            ])
+            painter.setBrush(QBrush(color_techo))
+            painter.drawPolygon(polygon)
+
+            # Ruedas (vertical)
+            painter.setBrush(QBrush(color_ruedas))
+            painter.drawEllipse(QPoint(x + 20, y + 10), 5, 5)
+            painter.drawEllipse(QPoint(x + 20, y + 40), 5, 5)
+
+            # Detalles de las ruedas
+            painter.setBrush(QBrush(color_detalle_ruedas))
+            painter.drawEllipse(QPoint(x + 20, y + 10), 2, 2)
+            painter.drawEllipse(QPoint(x + 20, y + 40), 2, 2)

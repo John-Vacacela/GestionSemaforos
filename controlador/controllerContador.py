@@ -11,6 +11,7 @@ class controllerContador:
         self.contador = Contador()
         self.cSemaforo = controllerSemaforo(self.vista)
         self.cSemaforo.establecer_colores()
+        self.cSemaforo.mover_vehiculos()
 
     def start_timer(self):
         self.timer = QTimer(self.vista)
@@ -28,4 +29,6 @@ class controllerContador:
         elif self.contador.valor == 22:
             self.cSemaforo.cambiar_colores()
             self.cSemaforo.establecer_colores()
+            self.cSemaforo.mover_vehiculos()
             self.contador.resetear()
+
