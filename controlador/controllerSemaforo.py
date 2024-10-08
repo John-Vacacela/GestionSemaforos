@@ -2,25 +2,13 @@ from modelo.modelSemaforo import Semaforo
 from modelo.modelCalle import Calle
 from modelo.modelEstado import Estado
 from vista.vistaCalles import vistaCalles
-from controlador.controllerVehiculo import controllerVehiculos
-#from controlador.controllerVehiculo import controllerVehiculo
-from PyQt5.QtWidgets import QFrame
-from PyQt5.QtCore import QTimer
+
 
 class controllerSemaforo:
     def __init__(self, vista: vistaCalles):
         self.vista = vista
         self.semaforoH = Semaforo(Estado.ROJO, Calle.HORIZONTAL)
-        self.semaforoV = Semaforo(Estado.VERDE, Calle.VERTICAL)  # Controlador de vehículos
-        self.cVehiculos = controllerVehiculos(self.vista)
-    
-    def mover_vehiculos(self):
-        if self.semaforoH.estado == Estado.VERDE:
-            print("Iniciando movimiento de carros en la calle horizontal")
-            self.cVehiculos.iniciar_movimiento("horizontal")
-        elif self.semaforoV.estado == Estado.VERDE:
-            print("Iniciando movimiento de carros en la calle vertical")
-            self.cVehiculos.iniciar_movimiento("vertical")
+        self.semaforoV = Semaforo(Estado.VERDE, Calle.VERTICAL)
 
     def cambiar_colores(self):
         if self.semaforoH.estado == Estado.VERDE:

@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QTimer
 from controlador.controllerSemaforo import controllerSemaforo
+from controlador.controllerVehiculo import controllerVehiculo
 from modelo.modelContador import Contador
 from vista.vistaCalles import vistaCalles
 
@@ -11,7 +12,9 @@ class controllerContador:
         self.contador = Contador()
         self.cSemaforo = controllerSemaforo(self.vista)
         self.cSemaforo.establecer_colores()
-        self.cSemaforo.mover_vehiculos()
+        self.cVehiculos = controllerVehiculo(
+            self.vista, self.cSemaforo.semaforoH, self.cSemaforo.semaforoV
+        )
 
     def start_timer(self):
         self.timer = QTimer(self.vista)
@@ -29,6 +32,4 @@ class controllerContador:
         elif self.contador.valor == 22:
             self.cSemaforo.cambiar_colores()
             self.cSemaforo.establecer_colores()
-            self.cSemaforo.mover_vehiculos()
             self.contador.resetear()
-
