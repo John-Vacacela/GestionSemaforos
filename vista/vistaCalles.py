@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt, QRect, QPoint
 class vistaCalles(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Gestión Semáforos")
+        self.setWindowTitle("Gestión semáforos")
         self.resize(500, 500)
         self.carros_horizontales = [100, 30]  # Posiciones en x
         self.carros_verticales = [420, 330]  # Posiciones en y
