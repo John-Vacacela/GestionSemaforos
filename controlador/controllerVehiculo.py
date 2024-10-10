@@ -1,59 +1,62 @@
+from modelo.modelSemaforo import Semaforo
 from modelo.modelCalle import Calle
 from modelo.modelEstado import Estado
 from vista.vistaCalles import vistaCalles
 from modelo.modelVehiculo import Vehiculo
+
+# from controlador.controllerVehiculo import controllerVehiculo
+from PyQt5.QtWidgets import QFrame
 from PyQt5.QtCore import QTimer
 
 
-class controllerVehiculo:
-    def __init__(self, vista: vistaCalles, semaforoH, semaforoV, timer_delay=16):
+class controllerVehiculos:
+    def __init__(self, vista: vistaCalles):
         self.vista = vista
-        self.semaforoH = semaforoH
-        self.semaforoV = semaforoV
-        self.timer_delay = timer_delay
-        self.vehiculoH1 = Vehiculo(Calle.HORIZONTAL, 140, 240)
-        self.vehiculoH2 = Vehiculo(Calle.HORIZONTAL, 40, 240)
-        self.vehiculoV1 = Vehiculo(Calle.VERTICAL, 240, 500)
-        self.vehiculoV2 = Vehiculo(Calle.VERTICAL, 240, 600)
-        self.vehiculos = [
-            self.vehiculoH1,
-            self.vehiculoH2,
-            self.vehiculoV1,
-            self.vehiculoV2,
+        self.timer_horizontal = QTimer()  # Temporizador para vehículos horizontales
+        self.timer_vertical = QTimer()  # Temporizador para vehículos verticales
+
+        # Conectar los temporizadores a sus respectivos métodos de movimiento continuo
+        self.timer_horizontal.timeout.connect(self.mover_carros_horizontales)
+        self.timer_vertical.timeout.connect(self.mover_carros_verticales)
+
+        # Crear instancias de Vehiculo para los carros horizontales y verticales
+        self.vehiculos_horizontales = [
+            Vehiculo(100, 240, 5, "horizontal"),
+            Vehiculo(30, 240, 5, "horizontal"),
         ]
-        self.actualizar_vista()
-        self.start_timer()
+        self.vehiculos_verticales = [
+            Vehiculo(240, 420, 5, "vertical"),
+            Vehiculo(240, 330, 5, "vertical"),
+        ]
 
-    def start_timer(self):
-        self.timer = QTimer(self.vista)
-        self.timer.timeout.connect(self.mover_carros)
-        self.timer.start(self.timer_delay)
+    def iniciar_movimiento(self, direccion, time):
+        if direccion == "horizontal":
+            self.timer_horizontal.start(
+                time
+            )  # Iniciar el temporizador para los vehículos horizontales
+        elif direccion == "vertical":
+            self.timer_vertical.start(
+                time
+            )  # Iniciar el temporizador para los vehículos verticales
 
-    def mover_carros(self):
-        for vehiculo in self.vehiculos:
-            if vehiculo.calle == Calle.HORIZONTAL:
-                if (
-                    self.semaforoH.estado == Estado.VERDE
-                    or self.semaforoH.estado == Estado.AMARILLO
-                ):
-                    vehiculo.mover_horizontal()
-                    self.actualizar_vista()
+    def detener_movimiento(self, direccion):
+        if direccion == "horizontal":
+            self.timer_horizontal.stop()  # Detener el temporizador de los vehículos horizontales
+        elif direccion == "vertical":
+            self.timer_vertical.stop()  # Detener el temporizador de los vehículos verticales
 
-                    if vehiculo.x > 500:
-                        vehiculo.x = -50
-            else:
-                if (
-                    self.semaforoV.estado == Estado.VERDE
-                    or self.semaforoV.estado == Estado.AMARILLO
-                ):
-                    vehiculo.mover_vertical()
-                    self.actualizar_vista()
+    def mover_carros_horizontales(self):
+        for vehiculo in self.vehiculos_horizontales:
+            vehiculo.mover()  # Actualiza la posición del vehículo horizontal
+            self.vista.carros_horizontales = [
+                vehiculo.x for vehiculo in self.vehiculos_horizontales
+            ]  # Actualiza las posiciones en la vista
+        self.vista.update()  # Forzar redibujado para actualizar las posiciones
 
-                    if vehiculo.y < -50:
-                        vehiculo.y = 500
-
-    def actualizar_vista(self):
-        self.vista.actualizarPosiciones(
-            [self.vehiculoH1.x, self.vehiculoH2.x],
-            [self.vehiculoV1.y, self.vehiculoV2.y],
-        )
+    def mover_carros_verticales(self):
+        for vehiculo in self.vehiculos_verticales:
+            vehiculo.mover()  # Actualiza la posición del vehículo vertical
+            self.vista.carros_verticales = [
+                vehiculo.y for vehiculo in self.vehiculos_verticales
+            ]  # Actualiza las posiciones en la vista
+        self.vista.update()  # Forzar redibujado para actualizar las posiciones

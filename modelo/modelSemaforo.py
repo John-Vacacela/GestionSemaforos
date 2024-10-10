@@ -1,4 +1,5 @@
 from modelo.modelEstado import Estado
+from modelo.modelCalle import Calle
 
 
 class Semaforo:

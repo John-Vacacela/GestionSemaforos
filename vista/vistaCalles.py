@@ -189,8 +189,3 @@ class vistaCalles(QWidget):
         painter.setBrush(QBrush(color_detalle_ruedas))
         painter.drawEllipse(QPoint(x + 20, y + 10), 2, 2)
         painter.drawEllipse(QPoint(x + 20, y + 40), 2, 2)
-
-    def actualizarPosiciones(self, carros_horizontales, carros_verticales):
-        self.carros_horizontales = carros_horizontales
-        self.carros_verticales = carros_verticales
-        self.update()
