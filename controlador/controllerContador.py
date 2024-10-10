@@ -5,7 +5,7 @@ from vista.vistaCalles import vistaCalles
 
 
 class controllerContador:
-    def __init__(self, vista: vistaCalles, timer_delay=400):
+    def __init__(self, vista: vistaCalles, timer_delay=1000):
         self.vista = vista
         self.timer_delay = timer_delay
         self.contador = Contador()
@@ -31,4 +31,3 @@ class controllerContador:
             self.cSemaforo.establecer_colores()
             self.cSemaforo.mover_vehiculos()
             self.contador.resetear()
-
