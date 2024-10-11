@@ -27,21 +27,6 @@ class controllerVehiculos:
 
     def iniciar_movimiento(self, direccion, time):
         if direccion == "horizontal":
-            self.timer_horizontal.start(time)  # Iniciar el temporizador para los vehículos horizontales
-        elif direccion == "vertical":
-            self.timer_vertical.start(time)  # Iniciar el temporizador para los vehículos verticales
-
-        self.vehiculos_horizontales = [
-            Vehiculo(100, 240, 5, "horizontal"),
-            Vehiculo(30, 240, 5, "horizontal"),
-        ]
-        self.vehiculos_verticales = [
-            Vehiculo(240, 420, 5, "vertical"),
-            Vehiculo(240, 330, 5, "vertical"),
-        ]
-
-    def iniciar_movimiento(self, direccion, time):
-        if direccion == "horizontal":
             self.timer_horizontal.start(
                 time
             )  # Iniciar el temporizador para los vehículos horizontales

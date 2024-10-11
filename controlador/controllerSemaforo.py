@@ -40,37 +40,6 @@ class controllerSemaforo:
         else:
             self.cVehiculos.iniciar_movimiento("vertical",20) 
 
-    def mover_vehiculos(self):
-        # Verifica si el semáforo horizontal está en verde
-        if (
-            self.semaforoH.estado == Estado.VERDE
-            or self.semaforoH.estado == Estado.AMARILLO
-        ):
-            self.cVehiculos.iniciar_movimiento(
-                "horizontal", 45
-            )  # Iniciar movimiento horizontal
-        elif (
-            self.semaforoH.estado == Estado.ROJO
-            and 95 <= self.cVehiculos.vehiculos_horizontales[0].x <= 130
-        ):
-            self.cVehiculos.detener_movimiento("horizontal")
-        else:
-            self.cVehiculos.iniciar_movimiento("horizontal", 20)
-
-        # Verifica si el semáforo vertical está en verde
-        if (
-            self.semaforoV.estado == Estado.VERDE
-            or self.semaforoV.estado == Estado.AMARILLO
-        ):
-            self.cVehiculos.iniciar_movimiento("vertical", 45)
-        elif (
-            self.semaforoV.estado == Estado.ROJO
-            and 395 <= self.cVehiculos.vehiculos_verticales[0].y <= 430
-        ):
-            self.cVehiculos.detener_movimiento("vertical")
-        else:
-            self.cVehiculos.iniciar_movimiento("vertical", 20)
-
     def cambiar_colores(self):
         if self.semaforoH.estado == Estado.VERDE:
             self.semaforoH.cambiar_estado()

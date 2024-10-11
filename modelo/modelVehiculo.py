@@ -15,13 +15,3 @@ class Vehiculo:
             self.y -= self.velocidad
             if self.y < -50:  # Reiniciar si sale por la parte superior
                 self.y = 500
-
-    def mover(self):
-        if self.direccion == "horizontal":
-            self.x += self.velocidad
-            if self.x > 500:  # Reiniciar si sale por la derecha
-                self.x = -50
-        elif self.direccion == "vertical":
-            self.y -= self.velocidad
-            if self.y < -50:  # Reiniciar si sale por la parte superior
-                self.y = 500
